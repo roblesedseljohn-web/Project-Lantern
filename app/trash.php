@@ -230,7 +230,7 @@ while ($folder = $folderResult->fetch_assoc()) {
             <div class='card-menu'>
                 <a href='trash.php?folder_id=".$folder['id']."'>Open</a>
                 <a href='restore_folder.php?id=".$folder['id']."'>Restore</a>
-                <a href='permanent_delete_folder.php?id=".$folder['id']."'>Delete Forever</a>
+                <form method='POST' action='permanent_delete_folder.php' onsubmit='return confirm(&quot;Permanently delete this folder and its contents?&quot;)' style='display:inline'><input type='hidden' name='id' value='".$folder['id']."'><input type='hidden' name='csrf_token' value='".$csrf_token."'><button type='submit'>Delete Forever</button></form>
             </div>
         </div>
         <div class='folder-icon'>📁</div>
@@ -252,7 +252,7 @@ while ($file = $fileResult->fetch_assoc()) {
             <button class='menu-btn'>⋮</button>
             <div class='card-menu'>
                 <a href='restore.php?id=".$file['id']."'>Restore</a>
-                <a href='permanent_delete.php?id=".$file['id']."'>Delete Forever</a>
+                <form method='POST' action='permanent_delete.php' onsubmit='return confirm(&quot;Permanently delete this file?&quot;)' style='display:inline'><input type='hidden' name='id' value='".$file['id']."'><input type='hidden' name='csrf_token' value='".$csrf_token."'><button type='submit'>Delete Forever</button></form>
             </div>
         </div>
         <div class='file-icon'>📄</div>
