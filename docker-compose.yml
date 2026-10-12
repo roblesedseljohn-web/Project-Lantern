@@ -1,0 +1,51 @@
+services:
+
+  php:
+
+    build: .
+
+    container_name: lantern-php
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - ./app:/var/www/html
+      - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+
+    restart: always
+
+  mariadb:
+
+    image: mariadb:11
+
+    container_name: lantern-db
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lantern
+      MYSQL_USER: lanternuser
+      MYSQL_PASSWORD: lanternpass
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - ./database:/var/lib/mysql
+
+    restart: always
+
+  phpmyadmin:
+
+    image: phpmyadmin/phpmyadmin
+
+    container_name: lantern-phpmyadmin
+
+    ports:
+      - "8081:80"
+
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: root
+
+    restart: always

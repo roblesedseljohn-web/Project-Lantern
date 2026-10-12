@@ -1,0 +1,40 @@
+# Database runtime files
+/database/
+!/database/.gitkeep
+
+# Application storage and uploads
+/storage/
+/uploads/
+/app/uploads/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.cnf
+*.pem
+*.key
+
+# Dependencies
+vendor/
+node_modules/
+
+# Temporary files
+*.log
+*.tmp
+*.cache
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Archives and installers
+*.rar
+*.zip
+*.exe
+*.apk
+
+# Windows
+Thumbs.db
+desktop.ini
