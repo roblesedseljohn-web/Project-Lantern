@@ -1,79 +1,20 @@
 <?php
-
 session_start();
-
-include 'includes/db.php';
-
-if (!isset($_SESSION['username'])) {
-
-    header("Location: login.php");
-    exit();
-}
-
+require 'includes/db.php';
+if (!isset($_SESSION['username'])) { http_response_code(401); exit('Unauthorized'); }
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !verifyCsrfToken($_POST['csrf_token'] ?? '')) { http_response_code(403); exit('Invalid request'); }
+$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+if (!$id || $id < 1) { http_response_code(400); exit('Invalid file'); }
 $username = $_SESSION['username'];
-
-if (!isset($_GET['id'])) {
-
-    die("Invalid file.");
-}
-
-$id = intval($_GET['id']);
-
-# =========================================
-# GET FILE
-# =========================================
-
-$stmt = $conn->prepare(
-    "SELECT * FROM files
-     WHERE id = ?
-     AND username = ?
-     LIMIT 1"
-);
-
-$stmt->bind_param(
-    "is",
-    $id,
-    $username
-);
-
+$stmt = $conn->prepare("SELECT filepath FROM files WHERE id = ? AND username = ? AND deleted = 1 LIMIT 1");
+$stmt->bind_param("is", $id, $username);
 $stmt->execute();
-
-$result = $stmt->get_result();
-
-if ($result->num_rows == 0) {
-
-    die("File not found.");
-}
-
-$file = $result->fetch_assoc();
-
-# =========================================
-# DELETE PHYSICAL FILE
-# =========================================
-
-if (file_exists($file['filepath'])) {
-
-    unlink($file['filepath']);
-}
-
-# =========================================
-# DELETE DATABASE RECORD
-# =========================================
-
-$deleteStmt = $conn->prepare(
-    "DELETE FROM files
-     WHERE id = ?"
-);
-
-$deleteStmt->bind_param(
-    "i",
-    $id
-);
-
-$deleteStmt->execute();
-
-header("Location: trash.php");
-
-exit();
-
-?>
+$file = $stmt->get_result()->fetch_assoc();
+if (!$file) { http_response_code(404); exit('File not found in trash'); }
+$path = $file['filepath'];
+if (is_file($path) && !unlink($path)) { http_response_code(500); exit('Could not remove file'); }
+$stmt = $conn->prepare("DELETE FROM files WHERE id = ? AND username = ? AND deleted = 1");
+$stmt->bind_param("is", $id, $username);
+$stmt->execute();
+header("Location: trash.php", true, 303);
+exit;
