@@ -149,7 +149,7 @@ $fileCards = "";
 while ($row = $result->fetch_assoc()) {
 
     $file = htmlspecialchars($row['filename'], ENT_QUOTES, 'UTF-8');
-    $filePath = "./" . $row['filepath'];
+    $filePath = "preview.php?id=" . (int)$row['id'];
     $extension = strtolower(trim($row['filetype']));
     $fileId = intval($row['id']);
     $openUrl = "download.php?id=" . $fileId;
