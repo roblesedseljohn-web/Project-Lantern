@@ -347,7 +347,7 @@ function normalizeRelativePath(
 */
 
 $uploadDir =
-    "uploads/";
+    "/var/www/lantern-storage/";
 
 
 if (!is_dir($uploadDir)) {
