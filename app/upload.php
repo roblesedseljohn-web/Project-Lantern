@@ -174,7 +174,7 @@ if ($file['error'] !== UPLOAD_ERR_OK) {
 |--------------------------------------------------------------------------
 */
 
-$maxFileSize = 10 * 1024 * 1024 * 1024; // 10 GB
+$maxFileSize = 2 * 1024 * 1024 * 1024; // 10 GB
 
 if ($file['size'] > $maxFileSize) {
 
@@ -397,7 +397,7 @@ $extension =
 */
 
 $uploadDir =
-    "uploads/";
+    "/var/www/lantern-storage/";
 
 
 if (!is_dir($uploadDir)) {
