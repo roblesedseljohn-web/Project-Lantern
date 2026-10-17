@@ -58,10 +58,10 @@
 </style>
 
 <div class="card">
-    <h1>Project Lantern</h1>
+    <h1>PROJECT LANTERN V2</h1>
 
     <p class="description">
-        Project Lantern is a self-hosted cloud storage platform designed
+        PROJECT LANTERN V2 is a self-hosted cloud storage platform designed
         to provide a simple, secure, and convenient way to store,
         organize, manage, and access files.
     </p>
