@@ -6,7 +6,7 @@ Independent rebuild staging branch of Project Lantern, retaining the PHP file ma
 1. Install Docker Desktop.
 2. Copy `.env.example` to `.env`, replace both passwords with strong unique values (no spaces or `#`).
 3. Run `docker compose up -d --build`.
-4. Run `docker compose exec -T mariadb mariadb -u root -p < database-init/001-schema.sql` in a compatible shell, or import the SQL file via local phpMyAdmin (`docker compose --profile admin up -d phpmyadmin`).
+4. The first MariaDB startup automatically initializes the schema from `database-init/001-schema.sql` on an empty V2 database volume.
 5. Open http://localhost:8080/auth.php and register an account.
 
 ## Storage
