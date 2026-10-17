@@ -66,7 +66,11 @@ $filePath = $file['filepath'];
 # VERIFY FILE EXISTS
 # =========================================
 
-if (!file_exists($filePath)) {
+$storageRoot = realpath('/var/www/lantern-storage');
+$resolvedPath = realpath($filePath);
+if (!$storageRoot || !$resolvedPath || !str_starts_with($resolvedPath, $storageRoot . DIRECTORY_SEPARATOR)) { http_response_code(404); exit('File not found'); }
+$filePath = $resolvedPath;
+if (!is_file($filePath)) {
 
     die("Physical file missing.");
 }
@@ -86,7 +90,8 @@ $mimeType = mime_content_type($filePath);
 # =========================================
 
 header('Content-Description: File Transfer');
-header('Content-Type: ' . $mimeType);
+header('Content-Type: application/octet-stream');
+header('X-Content-Type-Options: nosniff');
 header('Content-Disposition: attachment; filename="' . basename($fileName) . '"');
 header('Content-Length: ' . $fileSize);
 header('Cache-Control: no-cache');
