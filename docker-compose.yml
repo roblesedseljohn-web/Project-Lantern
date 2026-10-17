@@ -3,7 +3,7 @@ services:
     build: .
     container_name: lantern-php
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
     environment:
       DB_HOST: mariadb
       DB_NAME: lantern
@@ -26,6 +26,7 @@ services:
       MARIADB_PASSWORD: ${LANTERN_DB_PASSWORD:?Set LANTERN_DB_PASSWORD in .env}
     volumes:
       - lantern_v2_db:/var/lib/mysql
+      - ./database-init:/docker-entrypoint-initdb.d:ro
     restart: unless-stopped
 
   phpmyadmin:
